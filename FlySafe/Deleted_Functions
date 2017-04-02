@@ -1,0 +1,22 @@
+/*	private static void sortByTransfers(){
+		int count = 0; // this var counts the amount of routes put in after route i, with the dest of initial = source
+		for (int i = 0; i < routes.size(); i++){ // this loop goes through all routes
+			for (int y = i; y < routes.size(); y++){ // this for loop finds routes with dest of route i = source
+				if (routes.get(i).getDestination() == routes.get(y).getSource()){
+					count++;
+					Collections.swap(routes, i+count, y);
+				}
+			}
+			if (count > 0)
+				count--; // when you move to the next item you want to sort for, the amount of spaces filled in from i = count - 1
+		}
+	}
+	private static ArrayList<AirportADT> getAirports(){
+		readInputAirports();
+		return airports;
+	}
+	
+	private static ArrayList<AirlineADT> getAirlines(){
+		readInputAirlines();
+		return airlines;
+	}*/

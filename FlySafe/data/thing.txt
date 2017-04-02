@@ -1,0 +1,2 @@
+5601,"Shire Inda Selassie Airport","Shire Indasilase","Ethiopia","SHC","",14.0781,38.2725,6207,3,"U","Africa/Addis_Ababa"
+5600,"Shilavo Airport","Shilavo","Ethiopia","HIL","",6.08333,44.7667,1296,3,"U","Africa/Addis_Ababa"
