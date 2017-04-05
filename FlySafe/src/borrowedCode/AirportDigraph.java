@@ -21,7 +21,7 @@ public class AirportDigraph {
 	public AirportDigraph(int V){
 		this.V = V;
 		this.E = 0;
-		System.out.println("size" + " " + V);
+		//System.out.println("size" + " " + V);
 		adj = (Bag<Integer>[]) new Bag[V];
 		
 		for (int v = 0; v < V; v++)

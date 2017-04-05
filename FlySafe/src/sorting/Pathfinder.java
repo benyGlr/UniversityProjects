@@ -12,7 +12,7 @@ import database.fileToArrayList;
  * @author Matt Kaczmarek
  * Finds paths from one airport to another
  */
-class Pathfinder {
+public class Pathfinder {
 	// 1. given an array of airports, find all routes between every airport
 	// 	e.g. if we have airports A, B, C
 	// 	and if we have possible routes 1 and 2 between A and B

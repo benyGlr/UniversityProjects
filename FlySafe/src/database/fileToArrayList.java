@@ -13,6 +13,7 @@ package database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 import routeObjects.AirlineADT;
@@ -33,41 +34,34 @@ public class fileToArrayList {
 	private static void readInputAirports(){
 		try{
 			Scanner input = new Scanner(new File("data/airports.txt"));
+			Scanner input2 = new Scanner(new File("data/airlines.txt"));
 			while (input.hasNextLine()){
 				String current = input.nextLine();
 				//System.out.println(current);
 				String[] entry = current.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
 				AirportADT temp = new AirportADT(Integer.parseInt(entry[0]), entry[1], entry[2], entry[3], Float.parseFloat(entry[6]), Float.parseFloat(entry[7]), entry[4]);
 				airports.add(temp);
+				if (input2.hasNextLine()){
+					String current2 = input2.nextLine();
+					String[] entry2 = current2.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+					AirlineADT temp2 = new AirlineADT(0, entry2[1], Integer.parseInt(entry2[0]));
+					airlines.add(temp2);
+				}
 				
 			}
+			if (airlines.size() > 0)
+				airlines = Safety.calcAirlineSafety(airlines);
 			input.close();
+			input2.close();
+			Collections.sort(airports);
 		}catch(FileNotFoundException e){
 			System.out.println("airport File not found");
 		}
 	}
 	
-	private static void readInputAirlines(){
-		try{
-			Scanner input = new Scanner(new File("data/airlines.txt"));
-			while (input.hasNextLine()){
-				String current = input.nextLine();
-				String[] entry = current.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-				//System.out.println(entry[0]);
-				AirlineADT temp = new AirlineADT(0, entry[1], Integer.parseInt(entry[0]));
-				airlines.add(temp);
-				
-			}
-			input.close();
-		}catch(FileNotFoundException e){
-			System.out.println("airline File not found");
-		}
-		if (airlines.size() > 0)
-			airlines = Safety.calcAirlineSafety(airlines);
-	}
-	
 	private static void readInputRoutes(){
 		try{
+			System.out.println("here");
 			Scanner input = new Scanner(new File("data/routes.txt"));
 			while (input.hasNext()){
 				String current = input.nextLine();
@@ -76,42 +70,65 @@ public class fileToArrayList {
 				AirportADT source = null;
 				AirportADT dest = null;
 				RouteADT temp;
-				for (int i = 0; i < airlines.size() - 1; i++) {
+				int low = 0;
+				int high = airlines.size() - 1;
+				while(low <= high) {
+					int mid = (low + high)/2;
 					if (entry[1].substring(1).equals("N")) {
 						airline = nullAirline;
 						break;
 					}
 						
-					else if (Integer.parseInt(entry[1]) == airlines.get(i).getAirlineID()){
-						airline = airlines.get(i);
+					else if (Integer.parseInt(entry[1]) == airlines.get(mid).getAirlineID()){
+						airline = airlines.get(mid);
 						break;
 					}
+					if (airlines.get(mid).getAirlineID() > Integer.parseInt(entry[1]))
+						high = mid - 1;
+					else if(airlines.get(mid).getAirlineID() < Integer.parseInt(entry[1]))
+						low = mid + 1;
 				}
 				if (airline == null){
-					airline = nullAirline;
+					System.out.println(Integer.parseInt(entry[1]));
 				}
-				for (int i = 0; i < airports.size() - 1; i++) {
+				low = 0;
+				high = airports.size() - 1;
+				while(low <= high) {
+					int mid = (low + high)/2;
 					if (entry[3].substring(1).equals("N")){ 
 						source = nullAirport;
 						break;
 					}
-					else if (Integer.parseInt(entry[3]) == airports.get(i).getAirportID()){
-						source = airports.get(i);
+					else if (Integer.parseInt(entry[3]) == airports.get(mid).getAirportID()){
+						source = airports.get(mid);
 						break;
 					}
+					if (airports.get(mid).getAirportID() > Integer.parseInt(entry[3]))
+						high = mid - 1;
+					else if(airports.get(mid).getAirportID() < Integer.parseInt(entry[3]))
+						low = mid + 1;
 				}
 				if (source == null){
 					source = nullAirport;
 				}
-				for (int i = 0; i < airports.size() - 1; i++) {
+				
+				low = 0;
+				high = airports.size() - 1;
+				while(low <= high) {
+					int mid = (low + high)/2;
 					if (entry[5].substring(1).equals("N")){
 						dest = nullAirport;
 						break;
 					}
-					else if (Integer.parseInt(entry[5]) == airports.get(i).getAirportID()){
-						dest = airports.get(i);
+					
+					else if (Integer.parseInt(entry[5]) == airports.get(mid).getAirportID()){
+						dest = airports.get(mid);
 						break;
 					} 
+					if (airports.get(mid).getAirportID() > Integer.parseInt(entry[5]))
+						high = mid - 1;
+					else if(airports.get(mid).getAirportID() < Integer.parseInt(entry[5]))
+						low = mid + 1;
 				}
 				if (dest == null){
 					dest = nullAirport;
@@ -154,7 +171,6 @@ public class fileToArrayList {
 	
 	public static void init(){
 		readInputAirports();
-		readInputAirlines();
 		readInputRoutes();
 	}
 	public static ArrayList<RouteADT> getRoutes(){

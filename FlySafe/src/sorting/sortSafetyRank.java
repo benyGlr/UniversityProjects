@@ -15,7 +15,6 @@ public class sortSafetyRank {
     public static ArrayList<PathADT> sortPaths(ArrayList<PathADT> paths) {
     	// Create an array copy of the arraylist parameter
     	PathADT[] result = paths.toArray(new PathADT[paths.size()]);
-    	
     	// sorting
     	Merge.sort(result);
     	

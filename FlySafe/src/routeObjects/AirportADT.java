@@ -5,7 +5,7 @@ package routeObjects;
  * @author Daniel Brunton, Ben Giller, Matt Kaczmarek, Jiacheng Yang, Ray Winardi
  *
  */
-public class AirportADT {
+public class AirportADT implements Comparable<AirportADT>{
 
 	int airportID;
 	String airportCode;
@@ -134,5 +134,13 @@ public class AirportADT {
 	public void setLatitude(long latitude) {
 		this.latitude = latitude;
 	}
+	
+	public int compareTo(AirportADT a) {
+		if (this.getAirportID() > a.getAirportID()) return 1;
+		if (this.getAirportID() == a.getAirportID()) return 0;
+		return -1;
+	}
+
+
 	
 }

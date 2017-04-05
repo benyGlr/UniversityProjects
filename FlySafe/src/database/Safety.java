@@ -22,7 +22,9 @@ public class Safety {
 		try {
 			Scanner input = new Scanner(new File("data/AviationDataEnd2016UP.csv"));
 			while (input.hasNextLine()) {
-				allLines.add(input.nextLine());
+				String current = input.nextLine();
+				current = current.split(",")[23];
+				allLines.add(current);
 				fileLength++;
 			}
 			input.close();
@@ -36,12 +38,12 @@ public class Safety {
 		int maxIncidents = 0;
 		for (AirlineADT airline : outputAirlines) {
 			int incidents = 0;
-			String caseFreeName = airline.getName().toUpperCase();
+			String caseFreeName = airline.getName().toUpperCase().trim();
+			caseFreeName = caseFreeName.substring(1,caseFreeName.length() - 1);
 			for (int l = 0; l < fileLength; l++) {
-				int startIndex = allLines.get(l).indexOf(caseFreeName);
-				while (startIndex != -1) {
+				if(allLines.get(l).toUpperCase().trim().contains(caseFreeName)) {
 					incidents++;
-					startIndex = allLines.get(l).indexOf(caseFreeName, startIndex + caseFreeName.length());
+					//System.out.println(incidents);
 				}
 			}
 			if (incidents > maxIncidents) {
@@ -52,16 +54,15 @@ public class Safety {
 		// check every line in the input file for every airline
 		for (AirlineADT airline : outputAirlines) {
 			int incidents = 0;
-			String caseFreeName = airline.getName().toUpperCase();
+			String caseFreeName = airline.getName().toUpperCase().trim();
+			caseFreeName = caseFreeName.substring(1,caseFreeName.length() - 1);
 			for (int l = 0; l < fileLength; l++) {
-				int startIndex = allLines.get(l).indexOf(caseFreeName);
-				
-				while (startIndex != -1) {
-					System.out.println(startIndex);
+				if((allLines.get(l).toUpperCase().trim().contains(caseFreeName)))
+				{
 					incidents++;
-					startIndex = allLines.get(l).indexOf(caseFreeName, startIndex + caseFreeName.length());
 				}
 			}
+			
 			int safetyRank = (int)(((double)(incidents) / maxIncidents) * 100);
 			airline.setSafetyRank(safetyRank);
 		}
